@@ -1,0 +1,109 @@
+<div class="header-wrapper" *ngIf="displayHome" >
+  <p-card header="Welcome to Books Viewer App" subheader="Alaa Malas" [style]="{width: '360px'}" styleClass="ui-card-shadow">
+    <p-header>
+        <img style=" width: 70%; margin-left: 70px" src="Card" src="assets/images/books-stack.png">
+    </p-header>
+    <div>The Books App provides information about book reviews and The New York Times Best Sellers lists. You can
+      review the book's title, auther, description, publisher and available buy links.
+    </div>
+    <p-footer>
+        <button (click)="onLoadBooks()" class="btn btn-primary" style="margin-right: .25em">Load Books</button>
+    </p-footer>
+  </p-card>
+</div>
+
+<div class="content-wrapper" *ngIf="!displayHome">
+  <p-dataView #dv [value]="books" [paginator]="true" [rows]="5" paginatorPosition="both" filterBy="title"
+    [sortField]="sortField" [sortOrder]="sortOrder">
+    <p-header>
+      <div class="ui-helper-clearfix">
+        <div class="ui-g">
+          <div class="ui-g-12 ui-md-4">
+            <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By"
+              (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
+          </div>
+          <div class="ui-g-6 ui-md-4 filter-container">
+            <div style="position:relative">
+              <input type="search" pInputText placeholder="Search by title" (keyup)="dv.filter($event.target.value)">
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <button class="btn-home" (click)="onGoHome()"><i class="fa fa-home"></i></button>
+            <div class="" style="text-align:right; display:inline-block">
+              <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-header>
+    <ng-template let-book pTemplate="listItem">
+      <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+        <div class="ui-g-12 ui-md-3" style="text-align:center">
+          <img style="width:75px; height:110px" src="{{book.book_image}}">
+        </div>
+        <div class="ui-g-12 ui-md-8 ">
+          <div class="ui-g">
+            <div class="ui-g-4">Title: </div>
+            <div class="ui-g-8"><b>{{book.title}}</b></div>
+
+            <div class="ui-g-4">Description: </div>
+            <div class="ui-g-8"><b>{{book.description}}</b></div>
+
+            <div class="ui-g-4">Author: </div>
+            <div class="ui-g-8"><b>{{book.author}}</b></div>
+          </div>
+        </div>
+        <div class="ui-g-12 ui-md-1">
+          <button pButton type="button" class="btn btn-link" (click)="selectBook($event, book)">more</button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template let-book pTemplate="gridItem">
+      <div style="padding:.5em" class="ui-g-12 ui-md-3">
+        <p-panel [header]="book.title" [style]="{'text-align':'center'}">
+          <img src="{{book.book_image}}" style="width:50px; height:75px">
+          <div class="car-detail">{{book.title}}</div>
+          <hr class="ui-widget-content" style="border-top:0">
+          <button pButton type="button" class="btn btn-link" (click)="selectBook($event, book)">more</button>
+        </p-panel>
+      </div>
+    </ng-template>
+  </p-dataView>
+
+  <div style="height:50px">
+  <p-dialog header="Book Details" [(visible)]="displayDialog" [dismissableMask]="true"
+    [blockScroll]="true" [resizable]="true" showEffect="fade" [modal]="true" [style]="{width: '50%'}" [breakpoint]="500"
+    (onAfterHide)="onDialogHide()">
+    <div  style="height: 500px" *ngIf="selectedBook">
+      <div class="ui-g-12" style="text-align:center">
+        <img style="width:100px; height:150px" src="{{selectedBook.book_image}}">
+      </div>
+      <div class="ui-g-4">Title: </div>
+      <div class="ui-g-8"><b>{{selectedBook.title}}</b></div>
+
+      <div class="ui-g-4">Author: </div>
+      <div class="ui-g-8"><b>{{selectedBook.author}}</b></div>
+
+      <div class="ui-g-4">Description: </div>
+      <div class="ui-g-8"><b>{{selectedBook.description}}</b></div>
+
+      <div class="ui-g-4">Publisher: </div>
+      <div class="ui-g-8"><b>{{selectedBook.publisher}} - {{library.results.published_date}}</b></div>
+
+      <div class="ui-g-4">Contributor: </div>
+      <div class="ui-g-8"><b>{{selectedBook.contributor}}</b></div>
+
+      <br>
+      <div class="buy-links" >Buy links: </div>
+      <div *ngFor="let buy_link of selectedBook.buy_links">
+        <div class="buy-link">{{buy_link.name}}</div>
+        <div class="buy-link"><a href="{{buy_link.url}}">{{buy_link.url}}</a></div>
+      </div>
+
+    </div>
+  </p-dialog>
+</div>
+</div>
+<router-outlet></router-outlet>
+
+

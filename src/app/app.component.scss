@@ -1,0 +1,44 @@
+.header-wrapper{
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+body .ui-card {
+  box-shadow: none;
+}
+
+.buy-links{
+  display: block;
+  margin-left: 10px;
+}
+
+.buy-link {
+  display: block;
+  margin-left: 20px;
+}
+
+.content-wrapper{
+  height: 80%;
+  width: 80%;
+  margin: auto;
+}
+
+.btn-home{
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 5px 9px;
+  font-size: 16px;
+  cursor: pointer;
+  display:inline-block;
+  border-radius: 3px;
+}
+
+.btn-home:hover {
+  background-color: RoyalBlue;
+}
+
+.book-details{
+  text-overflow: ellipsis;
+}
